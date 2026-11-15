@@ -421,6 +421,10 @@ const Attendance = (function () {
                 </tr>
             `;
         }).join("");
+
+        if (window.I18n) {
+            I18n.translateDOM(tbody);
+        }
     }
 
     async function autoMarkAllPresent() {
