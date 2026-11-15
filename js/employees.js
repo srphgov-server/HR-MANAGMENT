@@ -372,6 +372,10 @@ const Employees = (function () {
         }
 
         renderPagination(totalPages);
+
+        if (window.I18n) {
+            I18n.translateDOM(tbody);
+        }
     }
 
     function getStatusBadge(status) {

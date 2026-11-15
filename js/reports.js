@@ -269,6 +269,10 @@ const Reports = (function () {
                 </tbody>
             </table>
         `;
+
+        if (window.I18n) {
+            I18n.translateDOM(wrapper);
+        }
     }
 
     function exportReportCSV() {

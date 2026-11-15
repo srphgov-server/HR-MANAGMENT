@@ -114,10 +114,10 @@ const App = (function () {
         }
     }
 
-    function handleHashChange() {
+    async function handleHashChange() {
         const hash = window.location.hash.replace("#", "");
         if (!hash) {
-            navigateTo("dashboard", null, false);
+            await navigateTo("dashboard", null, false);
             return;
         }
 
@@ -126,13 +126,13 @@ const App = (function () {
         const param = parts[1];
 
         if (view === "profile" && param) {
-            viewEmployeeProfile(param, parts[2] || "overview", false);
+            await viewEmployeeProfile(param, parts[2] || "overview", false);
         } else {
-            navigateTo(view, param, false);
+            await navigateTo(view, param, false);
         }
     }
 
-    function navigateTo(viewName, params = null, updateHash = true) {
+    async function navigateTo(viewName, params = null, updateHash = true) {
         currentView = viewName;
         currentViewParams = params;
 
@@ -157,37 +157,37 @@ const App = (function () {
 
         switch (viewName) {
             case "dashboard":
-                Dashboard.render(mainContent);
+                await Dashboard.render(mainContent);
                 break;
             case "employees":
-                Employees.render(mainContent);
+                await Employees.render(mainContent);
                 break;
             case "users":
-                Users.render(mainContent);
+                await Users.render(mainContent);
                 break;
             case "lists":
-                MasterLists.render(mainContent);
+                await MasterLists.render(mainContent);
                 break;
             case "reports":
-                Reports.render(mainContent);
+                await Reports.render(mainContent);
                 break;
             case "settings":
-                Settings.render(mainContent);
+                await Settings.render(mainContent);
                 break;
             case "attendance":
-                Attendance.render(mainContent);
+                await Attendance.render(mainContent);
                 break;
             case "leave":
-                LeaveMgmt.render(mainContent);
+                await LeaveMgmt.render(mainContent);
                 break;
             case "recruitment":
-                Recruitment.render(mainContent);
+                await Recruitment.render(mainContent);
                 break;
             case "payroll":
-                Payroll.render(mainContent);
+                await Payroll.render(mainContent);
                 break;
             default:
-                Dashboard.render(mainContent);
+                await Dashboard.render(mainContent);
                 break;
         }
 
@@ -197,7 +197,7 @@ const App = (function () {
         }
     }
 
-    function viewEmployeeProfile(employeeId, initialTab = "overview", updateHash = true) {
+    async function viewEmployeeProfile(employeeId, initialTab = "overview", updateHash = true) {
         currentView = "profile";
         currentViewParams = { employeeId, initialTab };
 
@@ -217,15 +217,18 @@ const App = (function () {
         const mainContent = document.getElementById("app-content");
         if (mainContent) {
             window.scrollTo({ top: 0, behavior: "smooth" });
-            EmployeeProfile.render(mainContent, employeeId, initialTab);
+            await EmployeeProfile.render(mainContent, employeeId, initialTab);
+            if (window.I18n) {
+                I18n.translateDOM(mainContent);
+            }
         }
     }
 
-    function refreshCurrentView() {
+    async function refreshCurrentView() {
         if (currentView === "profile" && currentViewParams) {
-            viewEmployeeProfile(currentViewParams.employeeId, currentViewParams.initialTab, false);
+            await viewEmployeeProfile(currentViewParams.employeeId, currentViewParams.initialTab, false);
         } else {
-            navigateTo(currentView, currentViewParams, false);
+            await navigateTo(currentView, currentViewParams, false);
         }
     }
 

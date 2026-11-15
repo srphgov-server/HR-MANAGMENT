@@ -16,9 +16,11 @@
     --topbar-height-mobile: 58px;
     --bg-surface: #f8fafc;
     --card-border-radius: 12px;
-    --font-family-latin: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --font-family-khmer: 'Battambang', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-family-latin: system-ui, -apple-system, "Segoe UI", Roboto, 'Battambang', Helvetica, Arial, sans-serif;
+    --font-family-khmer: 'Battambang', 'Hanuman', 'Kantumruy Pro', 'Khmer OS Battambang', 'Khmer OS', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     --font-family: var(--font-family-latin);
+    --bs-body-font-family: var(--font-family);
+    --bs-font-sans-serif: var(--font-family);
     --transition-speed: 0.25s;
     --touch-min-height: 42px;
 }
@@ -41,28 +43,112 @@ html, body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Khmer Typography & Battambang Font Support */
+/* Khmer Typography & Battambang Font Support Across All Fields */
 html[lang="km"],
 body.lang-km {
     --font-family: var(--font-family-khmer);
+    --bs-body-font-family: var(--font-family-khmer);
+    --bs-font-sans-serif: var(--font-family-khmer);
     font-family: var(--font-family-khmer) !important;
-    line-height: 1.6;
+    line-height: 1.65;
 }
 
-body.lang-km button,
 body.lang-km input,
 body.lang-km select,
 body.lang-km textarea,
+body.lang-km button,
+body.lang-km label,
+body.lang-km optgroup,
+body.lang-km option,
+body.lang-km .form-control,
+body.lang-km .form-select,
+body.lang-km .form-label,
+body.lang-km .form-text,
+body.lang-km .form-check-label,
+body.lang-km .input-group-text,
 body.lang-km .table,
+body.lang-km .table th,
+body.lang-km .table td,
 body.lang-km .card,
+body.lang-km .card-header,
+body.lang-km .card-title,
+body.lang-km .card-subtitle,
 body.lang-km .modal,
+body.lang-km .modal-header,
+body.lang-km .modal-title,
+body.lang-km .modal-body,
+body.lang-km .modal-footer,
 body.lang-km .dropdown-menu,
+body.lang-km .dropdown-item,
+body.lang-km .nav,
 body.lang-km .nav-link,
+body.lang-km .nav-tabs .nav-link,
 body.lang-km .badge,
 body.lang-km .breadcrumb,
+body.lang-km .breadcrumb-item,
 body.lang-km .toast,
-body.lang-km .sidebar-nav-link {
-    font-family: 'Battambang', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+body.lang-km .toast-header,
+body.lang-km .toast-body,
+body.lang-km .alert,
+body.lang-km .tooltip,
+body.lang-km .popover,
+body.lang-km .sidebar-nav-link,
+body.lang-km .sidebar-heading,
+body.lang-km .pagination,
+body.lang-km .page-link {
+    font-family: 'Battambang', 'Hanuman', 'Kantumruy Pro', 'Khmer OS Battambang', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* Form Controls & Inputs Comfort for Khmer Script Subscripts and Accents */
+body.lang-km .form-control,
+body.lang-km .form-select {
+    line-height: 1.6;
+    padding-top: 0.45rem;
+    padding-bottom: 0.45rem;
+    font-size: 0.95rem;
+}
+
+body.lang-km input::placeholder,
+body.lang-km textarea::placeholder,
+body.lang-km .form-control::placeholder {
+    font-family: 'Battambang', system-ui, -apple-system, sans-serif !important;
+    line-height: 1.6;
+    opacity: 0.75;
+}
+
+body.lang-km select option,
+body.lang-km select optgroup {
+    font-family: 'Battambang', system-ui, -apple-system, sans-serif !important;
+    font-size: 0.95rem;
+    padding: 6px 10px;
+}
+
+body.lang-km .form-label {
+    margin-bottom: 0.35rem;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+body.lang-km .table th {
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+body.lang-km .table td,
+body.lang-km .table th {
+    vertical-align: middle;
+    line-height: 1.6;
+}
+
+body.lang-km .btn {
+    line-height: 1.5;
+    padding-top: 0.38rem;
+    padding-bottom: 0.38rem;
+}
+
+body.lang-km .modal-title {
+    line-height: 1.5;
+    font-weight: 700;
 }
 
 /* Retain monospace fonts for identifiers, timestamps, numbers, and code */

@@ -186,6 +186,10 @@ const MasterLists = (function () {
                 </tr>
             `;
         }).join("");
+
+        if (window.I18n) {
+            I18n.translateDOM(tbody);
+        }
     }
 
     function openItemModal(listId = null) {
