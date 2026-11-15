@@ -343,6 +343,20 @@ const API = (function () {
                 };
             }
 
+            case "updateEmployeePhoto": {
+                const empId = data.EmployeeID || data.id;
+                const photo = data.EmployeePhoto !== undefined ? data.EmployeePhoto : (data.photo !== undefined ? data.photo : "");
+                const idx = demoStore.employees.findIndex((e) => e.EmployeeID === empId);
+                if (idx >= 0) {
+                    demoStore.employees[idx].EmployeePhoto = photo;
+                    demoStore.employees[idx].UpdatedDate = new Date().toISOString().substring(0, 10);
+                    demoStore.employees[idx].UpdatedBy = Auth.getCurrentUser() ? Auth.getCurrentUser().Username : "Admin";
+                    saveDemoStore();
+                    return { success: true, data: demoStore.employees[idx], message: "Profile photo updated successfully" };
+                }
+                return { success: false, message: "Employee [" + empId + "] not found" };
+            }
+
             case "saveEmployee": {
                 const emp = data;
                 const nowStr = new Date().toISOString().substring(0, 10);
