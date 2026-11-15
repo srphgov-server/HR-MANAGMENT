@@ -117,6 +117,10 @@ const LeaveMgmt = (function () {
         } else if (activeTab === "calendar") {
             renderCalendarView(content);
         }
+
+        if (window.I18n) {
+            I18n.translateDOM(content);
+        }
     }
 
     function renderKPIs() {
