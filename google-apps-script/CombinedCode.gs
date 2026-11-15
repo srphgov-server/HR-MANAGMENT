@@ -1,4 +1,13 @@
 /**
+ * ApexHR Enterprise - Google Apps Script Combined Distribution
+ * Auto-generated bundle
+ */
+
+// =============================================================
+// FILE: Config.gs
+// =============================================================
+
+/**
  * Google Apps Script - Central Backend Configuration
  * 
  * Instructions:
@@ -46,6 +55,12 @@ const CONFIG = {
         AUDIT_LOG: "AuditLog"
     }
 };
+
+
+// =============================================================
+// FILE: Utils.gs
+// =============================================================
+
 /**
  * Google Apps Script - Database Utility & Helper Functions
  */
@@ -194,6 +209,53 @@ function createResponse(success, data, message) {
         .createTextOutput(JSON.stringify(payload))
         .setMimeType(ContentService.MimeType.JSON);
 }
+
+
+// =============================================================
+// FILE: AuditLog.gs
+// =============================================================
+
+/**
+ * Google Apps Script - Security Audit Logging
+ */
+
+function logAuditEntry(userId, userName, action, module, recordId, description) {
+    try {
+        const sheet = getSheet(CONFIG.SHEETS.AUDIT_LOG);
+        const timestamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
+        const logId = generateNextId(sheet, "LOG-", "LogID");
+
+        const entry = {
+            LogID: logId,
+            UserID: userId || "SYSTEM",
+            UserName: userName || "System",
+            Action: action,
+            Module: module,
+            RecordID: recordId || "",
+            Description: description || "",
+            Timestamp: timestamp,
+            IPAddress: "GoogleAppsScript"
+        };
+
+        appendObjectToSheet(sheet, entry);
+    } catch (e) {
+        Logger.log("Audit log failed: " + e.message);
+    }
+}
+
+function handleGetAuditLogs() {
+    const sheet = getSheet(CONFIG.SHEETS.AUDIT_LOG);
+    const logs = sheetToObjects(sheet);
+    // Return last 100 in reverse chronological order
+    logs.reverse();
+    return createResponse(true, logs.slice(0, 100), "Audit logs retrieved");
+}
+
+
+// =============================================================
+// FILE: Setup.gs
+// =============================================================
+
 /**
  * Google Apps Script - Database Setup & Schema Initialization
  * 
@@ -457,6 +519,12 @@ function seedSampleRecords(ss) {
         logSheet.appendRow(["LOG-000001", "USR-000001", "Sarah Jenkins", "SYSTEM_SETUP", "System", "DATABASE", "Database initialized with setupDatabase()", new Date().toISOString(), "127.0.0.1"]);
     }
 }
+
+
+// =============================================================
+// FILE: Auth.gs
+// =============================================================
+
 /**
  * Google Apps Script - Authentication & Session Validation
  */
@@ -497,6 +565,12 @@ function handleLogin(data) {
         token: sessionToken
     }, "Authentication successful");
 }
+
+
+// =============================================================
+// FILE: Employees.gs
+// =============================================================
+
 /**
  * Google Apps Script - Employee Core Management
  */
@@ -615,6 +689,32 @@ function handleDeleteEmployee(data) {
         return createResponse(true, null, "Employee marked as Resigned/Archived.");
     }
 }
+
+function handleUpdateEmployeePhoto(data) {
+    const empId = data.EmployeeID || data.id;
+    if (!empId) {
+        return createResponse(false, null, "Employee ID is required.");
+    }
+    const sheet = getSheet(CONFIG.SHEETS.EMPLOYEES);
+    const today = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd");
+    const photo = data.EmployeePhoto !== undefined ? data.EmployeePhoto : (data.photo !== undefined ? data.photo : "");
+    const updated = updateObjectInSheet(sheet, "EmployeeID", empId, {
+        EmployeePhoto: photo,
+        UpdatedDate: today,
+        UpdatedBy: "Admin"
+    });
+    if (!updated) {
+        return createResponse(false, null, "Employee [" + empId + "] was not found.");
+    }
+    logAuditEntry("ADMIN", "Admin", "UPDATE_PHOTO", "Employees", empId, "Updated profile photo for " + empId);
+    return createResponse(true, { EmployeeID: empId, EmployeePhoto: photo }, "Profile photo updated successfully");
+}
+
+
+// =============================================================
+// FILE: SubRecords.gs
+// =============================================================
+
 /**
  * Google Apps Script - Employee Profile Sub-Record Handlers
  */
@@ -695,6 +795,12 @@ function handleDeleteSubRecord(payload) {
 
     return createResponse(true, null, "Sub-record deleted successfully");
 }
+
+
+// =============================================================
+// FILE: MasterLists.gs
+// =============================================================
+
 /**
  * Google Apps Script - Dynamic Master Lists & Dropdown Options
  */
@@ -737,6 +843,12 @@ function handleDeleteMasterListItem(data) {
 
     return createResponse(true, null, "Dropdown option deleted successfully");
 }
+
+
+// =============================================================
+// FILE: Users.gs
+// =============================================================
+
 /**
  * Google Apps Script - User Management & System Roles
  */
@@ -787,41 +899,12 @@ function handleSaveUser(data) {
     delete data.PasswordHash;
     return createResponse(true, data, "User account saved successfully");
 }
-/**
- * Google Apps Script - Security Audit Logging
- */
 
-function logAuditEntry(userId, userName, action, module, recordId, description) {
-    try {
-        const sheet = getSheet(CONFIG.SHEETS.AUDIT_LOG);
-        const timestamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
-        const logId = generateNextId(sheet, "LOG-", "LogID");
 
-        const entry = {
-            LogID: logId,
-            UserID: userId || "SYSTEM",
-            UserName: userName || "System",
-            Action: action,
-            Module: module,
-            RecordID: recordId || "",
-            Description: description || "",
-            Timestamp: timestamp,
-            IPAddress: "GoogleAppsScript"
-        };
+// =============================================================
+// FILE: Code.gs
+// =============================================================
 
-        appendObjectToSheet(sheet, entry);
-    } catch (e) {
-        Logger.log("Audit log failed: " + e.message);
-    }
-}
-
-function handleGetAuditLogs() {
-    const sheet = getSheet(CONFIG.SHEETS.AUDIT_LOG);
-    const logs = sheetToObjects(sheet);
-    // Return last 100 in reverse chronological order
-    logs.reverse();
-    return createResponse(true, logs.slice(0, 100), "Audit logs retrieved");
-}
 /**
  * ApexHR Suite - Google Apps Script Master API Router
  * 
@@ -906,6 +989,9 @@ function doPost(e) {
             case "createEmployee":
             case "saveEmployee":
                 return handleSaveEmployee(data);
+
+            case "updateEmployeePhoto":
+                return handleUpdateEmployeePhoto(data);
 
             case "deleteEmployee":
                 return handleDeleteEmployee(data);
