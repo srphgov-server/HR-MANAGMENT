@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApexHR Suite - Enterprise HR Management System</title>
+    <!-- Google Font Battambang for Khmer Language Support -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Custom Theme Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div id="app-layout">
+        <!-- Sidebar Backdrop for Mobile -->
+        <div id="sidebar-backdrop" class="d-none"></div>
+
+        <!-- Left Sidebar Navigation -->
+        <aside id="app-sidebar">
+            <div class="sidebar-brand d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center text-truncate">
+                    <i class="bi bi-diagram-3-fill text-primary me-2 fs-4"></i>
+                    <span>ApexHR <small class="fw-normal text-muted fs-6">Suite</small></span>
+                </div>
+                <button type="button" class="btn-close btn-close-white d-lg-none" id="btn-sidebar-close" aria-label="Close navigation"></button>
+            </div>
+
+            <div class="sidebar-nav">
+                <div class="sidebar-heading" data-i18n="sidebar_core_admin">Core Administration</div>
+                <a href="#dashboard" class="sidebar-nav-link active" data-view="dashboard">
+                    <i class="bi bi-speedometer2"></i>
+                    <span data-i18n="nav_dashboard">Dashboard</span>
+                </a>
+                <a href="#employees" class="sidebar-nav-link" data-view="employees">
+                    <i class="bi bi-people"></i>
+                    <span data-i18n="nav_employees">Employee Directory</span>
+                </a>
+                <a href="#reports" class="sidebar-nav-link" data-view="reports" data-permission="reports.view">
+                    <i class="bi bi-file-earmark-bar-graph"></i>
+                    <span data-i18n="nav_reports">HR Reports</span>
+                </a>
+
+                <div class="sidebar-heading" data-i18n="sidebar_system_sec">System & Security</div>
+                <a href="#users" class="sidebar-nav-link" data-view="users" data-permission="users.manage">
+                    <i class="bi bi-shield-lock"></i>
+                    <span data-i18n="nav_users">User Management</span>
+                </a>
+                <a href="#lists" class="sidebar-nav-link" data-view="lists" data-permission="lists.manage">
+                    <i class="bi bi-list-nested"></i>
+                    <span data-i18n="nav_lists">Master Data Lists</span>
+                </a>
+                <a href="#settings" class="sidebar-nav-link" data-view="settings" data-permission="settings.manage">
+                    <i class="bi bi-gear"></i>
+                    <span data-i18n="nav_settings">System Settings</span>
+                </a>
+
+                <div class="sidebar-heading" data-i18n="sidebar_workforce_ops">Workforce Operations</div>
+                <a href="#attendance" class="sidebar-nav-link" data-view="attendance" data-permission="attendance.view">
+                    <i class="bi bi-clock-history"></i>
+                    <span data-i18n="nav_attendance">Attendance & Time</span>
+                </a>
+                <a href="#leave" class="sidebar-nav-link" data-view="leave" data-permission="leave.view">
+                    <i class="bi bi-calendar2-range"></i>
+                    <span data-i18n="nav_leave">Leave Mgmt</span>
+                </a>
+                <a href="#recruitment" class="sidebar-nav-link" data-view="recruitment" data-permission="recruitment.view">
+                    <i class="bi bi-person-badge"></i>
+                    <span data-i18n="nav_recruitment">Recruitment & ATS</span>
+                </a>
+                <a href="#payroll" class="sidebar-nav-link" data-view="payroll" data-permission="payroll.view">
+                    <i class="bi bi-cash-stack"></i>
+                    <span data-i18n="nav_payroll">Payroll & Payslips</span>
+                </a>
+            </div>
+
+            <div class="sidebar-footer text-muted">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="small fw-semibold text-white" data-i18n="footer_company">ApexHR Enterprise</div>
+                        <small style="font-size: 0.72rem;" data-i18n="footer_edition">Google Sheets Edition</small>
+                    </div>
+                    <span class="badge bg-dark text-muted font-monospace">v1.0.0</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <div id="main-wrapper">
+            <!-- Top Navigation Bar -->
+            <header id="app-topbar">
+                <div class="d-flex align-items-center gap-2 gap-sm-3">
+                    <button class="btn btn-light d-lg-none p-1 px-2 border" id="btn-sidebar-toggle" aria-label="Toggle navigation">
+                        <i class="bi bi-list fs-5"></i>
+                    </button>
+                    <div class="d-none d-md-flex align-items-center text-muted small text-truncate">
+                        <i class="bi bi-building me-1"></i> <span data-i18n="company_name">Apex Corporate Technologies</span>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-2 gap-md-3">
+                    <!-- Backend Connection Status Indicator Pill -->
+                    <div id="connection-status-pill" class="badge bg-secondary-subtle text-secondary border d-flex align-items-center gap-1 py-1 px-2 cursor-pointer" onclick="App.navigateTo('settings')">
+                        <span class="status-indicator-dot bg-secondary"></span>
+                        <span class="connection-status-text" data-i18n="conn_checking">Checking...</span>
+                    </div>
+
+                    <!-- Language Switcher (English & Khmer) -->
+                    <div class="dropdown" id="language-switcher-dropdown">
+                        <button class="btn btn-light btn-sm border dropdown-toggle d-flex align-items-center gap-1" type="button" data-bs-toggle="dropdown" id="lang-switcher-btn" aria-label="Select Language">
+                            <i class="bi bi-translate text-primary"></i> <span id="current-language-label" class="fw-semibold">English</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                            <li class="dropdown-header small text-uppercase fw-bold" data-i18n="language">Language / ភាសា</li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center justify-content-between lang-switch-item" href="javascript:void(0)" data-lang="en">
+                                    <span><span class="me-2">🇺🇸</span>English</span>
+                                    <i class="bi bi-check2 text-primary d-none check-icon" id="check-lang-en"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center justify-content-between lang-switch-item" href="javascript:void(0)" data-lang="km">
+                                    <span><span class="me-2">🇰🇭</span>ភាសាខ្មែរ (Khmer)</span>
+                                    <i class="bi bi-check2 text-primary d-none check-icon" id="check-lang-km"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Role Switcher (Immediate Demo Tester) -->
+                    <div class="dropdown">
+                        <button class="btn btn-light btn-sm border dropdown-toggle d-flex align-items-center gap-1" type="button" data-bs-toggle="dropdown" id="role-switcher-btn" aria-label="Switch User Role">
+                            <i class="bi bi-person-gear"></i> <span id="current-user-role" class="fw-semibold d-none d-sm-inline">Super Admin</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                            <li class="dropdown-header small text-uppercase fw-bold" data-i18n="test_perspectives">Test Role Perspectives:</li>
+                            <li><a class="dropdown-item role-switch-item" href="javascript:void(0)" data-role="ROL-001"><i class="bi bi-shield-fill-check text-primary me-2"></i>Super Admin (Full Access)</a></li>
+                            <li><a class="dropdown-item role-switch-item" href="javascript:void(0)" data-role="ROL-002"><i class="bi bi-person-badge text-success me-2"></i>HR Admin (Operations)</a></li>
+                            <li><a class="dropdown-item role-switch-item" href="javascript:void(0)" data-role="ROL-003"><i class="bi bi-person text-info me-2"></i>HR Officer (Day-to-day)</a></li>
+                            <li><a class="dropdown-item role-switch-item" href="javascript:void(0)" data-role="ROL-004"><i class="bi bi-people text-warning me-2"></i>Manager (Dept Reports)</a></li>
+                            <li><a class="dropdown-item role-switch-item" href="javascript:void(0)" data-role="ROL-005"><i class="bi bi-person-check text-secondary me-2"></i>Employee (Self Service)</a></li>
+                            <li><a class="dropdown-item role-switch-item" href="javascript:void(0)" data-role="ROL-006"><i class="bi bi-eye text-muted me-2"></i>Viewer (Read Only)</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- User Account Dropdown -->
+                    <div class="dropdown" id="user-profile-dropdown">
+                        <a href="javascript:void(0)" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+                            <img id="current-user-avatar" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&auto=format&fit=crop&q=80" class="rounded-circle border me-1 me-sm-2" width="32" height="32" style="object-fit: cover;" alt="User">
+                            <span id="current-user-name" class="fw-semibold small d-none d-sm-inline">Sarah Jenkins</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                            <li><a class="dropdown-item" href="javascript:void(0)" onclick="App.viewEmployeeProfile('EMP-000001')"><i class="bi bi-person-circle me-2"></i><span data-i18n="my_profile">My Profile</span></a></li>
+                            <li><a class="dropdown-item" href="#settings" onclick="App.navigateTo('settings')"><i class="bi bi-gear me-2"></i><span data-i18n="settings">Settings</span></a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="Auth.logout()"><i class="bi bi-box-arrow-right me-2"></i><span data-i18n="logout">Log Out</span></a></li>
+                        </ul>
+                    </div>
+
+                    <button class="btn btn-primary btn-sm d-none" id="btn-nav-login" onclick="Auth.initDefaultSession()" data-i18n="login">Log In</button>
+                </div>
+            </header>
+
+            <!-- Dynamic Application Content Container -->
+            <main id="app-content">
+                <!-- Views render here dynamically -->
+            </main>
+        </div>
+    </div>
+
+    <!-- Global Loading Overlay -->
+    <div id="global-loading-overlay" class="d-none">
+        <div class="loading-card">
+            <div class="spinner-border text-primary" role="status"></div>
+            <div>
+                <h6 class="fw-bold mb-0" id="global-loading-text">Connecting to HR Database...</h6>
+                <small class="text-muted">Communicating with Google Sheets API</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container" style="z-index: 2050;"></div>
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+
+    <!-- Application Modules (Loaded in dependency order) -->
+    <script src="js/config.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/mock-data.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/employees.js"></script>
+    <script src="js/employee-profile.js"></script>
+    <script src="js/users.js"></script>
+    <script src="js/lists.js"></script>
+    <script src="js/reports.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/attendance.js"></script>
+    <script src="js/leave.js"></script>
+    <script src="js/recruitment.js"></script>
+    <script src="js/payroll.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
