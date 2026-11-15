@@ -1,7 +1,7 @@
 /**
  * HR Management System - Internationalization (i18n) Module
  * Supports seamless bilingual switching: English (en) and ភាសាខ្មែរ (km)
- * Khmer typography powered by Google Font Battambang.
+ * Khmer typography powered by Google Font Battambang across all fields and modals.
  */
 
 const I18n = (function () {
@@ -67,6 +67,8 @@ const I18n = (function () {
             btn_filter: "Filter",
             btn_reset: "Reset",
             btn_back: "Back",
+            btn_save_changes: "Save Changes",
+            btn_save_record: "Save Record",
 
             // Common Table Columns
             th_id: "ID",
@@ -312,6 +314,8 @@ const I18n = (function () {
             btn_filter: "ត្រង",
             btn_reset: "កំណត់ឡើងវិញ",
             btn_back: "ត្រឡប់ក្រោយ",
+            btn_save_changes: "រក្សាទុកការផ្លាស់ប្តូរ",
+            btn_save_record: "រក្សាទុកកំណត់ត្រា",
 
             // Common Table Columns
             th_id: "លេខកូដ",
@@ -502,6 +506,373 @@ const I18n = (function () {
     };
 
     /**
+     * Comprehensive Bilingual Phrase Map for form fields, modal inputs, table headers,
+     * sub-record tabs, buttons, placeholders, and dropdown options.
+     */
+    const PHRASE_EN_TO_KM = {
+        // Sections & Headers
+        "1. Personal Information": "១. ព័ត៌មានផ្ទាល់ខ្លួន",
+        "2. Contact & Location Details": "២. ព័ត៌មានទំនាក់ទំនង និងអាសយដ្ឋាន",
+        "3. Employment & Placement": "៣. ការងារ និងការចាត់តាំង",
+        "4. Identification & Documents": "៤. អត្តសញ្ញាណប័ណ្ណ និងឯកសារ",
+        "Add New Employee": "បន្ថែមបុគ្គលិកថ្មី",
+        "Edit Employee": "កែសម្រួលព័ត៌មានបុគ្គលិក",
+        "Back to Directory": "ត្រឡប់ទៅបញ្ជីបុគ្គលិក",
+        "Print Profile": "បោះពុម្ពប្រវត្តិរូប",
+        "Employee Directory": "បញ្ជីបុគ្គលិក",
+
+        // Profile 15 Tabs
+        "Overview": "ទិដ្ឋភាពទូទៅ",
+        "Personal": "ព័ត៌មានផ្ទាល់ខ្លួន",
+        "Employment": "ការងារ និងដំណែង",
+        "Compensation": "ប្រាក់បៀវត្សរ៍ និងសំណង",
+        "Documents": "ឯកសារភ្ជាប់",
+        "Skills": "ជំនាញ និងបច្ចេកទេស",
+        "Experience": "បទពិសោធន៍ការងារ",
+        "Education": "កម្រិតវប្បធម៌ / ការសិក្សា",
+        "Training": "វគ្គបណ្តុះបណ្តាល",
+        "Emergency Contacts": "ទំនាក់ទំនងបន្ទាន់",
+        "Family / Dependents": "ក្រុមគ្រួសារ / អ្នកក្នុងបន្ទុក",
+        "Performance": "ការវាយតម្លៃការងារ",
+        "Career Dev": "ការអភិវឌ្ឍអាជីព",
+        "Leave Summary": "សង្ខេបច្បាប់ឈប់សម្រាក",
+        "Company Assets": "ទ្រព្យសម្បត្តិក្រុមហ៊ុន",
+        "HR Notes": "កំណត់សម្គាល់ HR",
+        "Disciplinary": "វិន័យ និងការព្រមាន",
+        "Bank & Payment": "គណនីធនាគារ និងការទូទាត់",
+
+        // Form Labels - Employee Modal & Profile
+        "First Name": "នាមខ្លួន",
+        "Last Name": "នាមត្រកូល",
+        "Full Name": "ឈ្មោះពេញ",
+        "Date of Birth": "ថ្ងៃខែឆ្នាំកំណើត",
+        "Gender": "យេនឌ័រ",
+        "Marital Status": "ស្ថានភាពអាពាហ៍ពិពាហ៍",
+        "Nationality": "សញ្ជាតិ",
+        "National ID / Passport": "អត្តសញ្ញាណប័ណ្ណ / លិខិតឆ្លងដែន",
+        "Tax ID Number": "លេខអត្តសញ្ញាណកម្មពន្ធ (TIN)",
+        "Corporate Email": "អ៊ីមែលក្រុមហ៊ុន / ស្ថាប័ន",
+        "Phone Number": "លេខទូរស័ព្ទ",
+        "Primary Phone": "លេខទូរស័ព្ទចម្បង",
+        "Alternative Phone": "លេខទូរស័ព្ទបន្ទាប់",
+        "Residential Address": "អាសយដ្ឋានបច្ចុប្បន្ន",
+        "Employee Code": "លេខកូដសម្គាល់បុគ្គលិក",
+        "Department": "នាយកដ្ឋាន",
+        "Position / Title": "មុខតំណែង / តួនាទី",
+        "Employment Type": "ប្រភេទការងារ",
+        "Employment Status": "ស្ថានភាពការងារ",
+        "Reporting Manager": "ប្រធានគ្រប់គ្រងផ្ទាល់",
+        "Join Date": "ថ្ងៃចូលធ្វើការ",
+        "Work Location": "ទីកន្លែងបំពេញការងារ",
+        "Cost Center": "មជ្ឈមណ្ឌលចំណាយ (Cost Center)",
+
+        // Sub-records Form Labels
+        "Company / Employer": "ក្រុមហ៊ុន / និយោជក",
+        "Position Held": "មុខតំណែងទទួលខុសត្រូវ",
+        "Start Date": "ថ្ងៃចាប់ផ្តើម",
+        "End Date": "ថ្ងៃបញ្ចប់",
+        "Key Responsibilities": "ទំនួលខុសត្រូវចម្បងៗ",
+        "Reference Contact": "ទំនាក់ទំនងយោង",
+        "Institution / University": "គ្រឹះស្ថានសិក្សា / សាកលវិទ្យាល័យ",
+        "Degree / Qualification": "សញ្ញាបត្រ / កម្រិតវប្បធម៌",
+        "Field of Study": "ជំនាញសិក្សា / ឯកទេស",
+        "Graduation Year": "ឆ្នាំបញ្ចប់ការសិក្សា",
+        "Grade": "និទ្ទេស / ពិន្ទុ",
+        "Training Course Name": "ឈ្មោះវគ្គបណ្តុះបណ្តាល",
+        "Training Provider": "ស្ថាប័នផ្តល់ការបណ្តុះបណ្តាល",
+        "Completion Date": "ថ្ងៃបញ្ចប់វគ្គ",
+        "Hours / Credits": "ចំនួនម៉ោង / ក្រេឌីត",
+        "Certification Obtained": "វិញ្ញាបនបត្រទទួលបាន",
+        "Skill Name": "ឈ្មោះជំនាញ",
+        "Skill Type": "ប្រភេទជំនាញ",
+        "Skill Level": "កម្រិតជំនាញ",
+        "Years of Experience": "បទពិសោធន៍ (ឆ្នាំ)",
+        "Certification": "វិញ្ញាបនបត្របញ្ជាក់",
+        "Relationship": "ទំនាក់ទំនងត្រូវជា",
+        "Primary Emergency Contact?": "ទំនាក់ទំនងបន្ទាន់ចម្បង?",
+        "Dependent Name": "ឈ្មោះអ្នកក្នុងបន្ទុក",
+        "Designated Beneficiary?": "អ្នកទទួលផលដែលបានចាត់តាំង?",
+        "Document Type": "ប្រភេទឯកសារ",
+        "Document Name": "ឈ្មោះឯកសារ",
+        "Document Number": "លេខឯកសារ",
+        "Issue Date": "ថ្ងៃចេញឯកសារ",
+        "Expiry Date": "ថ្ងៃផុតកំណត់",
+        "File URL": "តំណភ្ជាប់ឯកសារ (URL)",
+        "Remarks": "កំណត់សម្គាល់",
+        "Review Period": "រយៈពេលវាយតម្លៃ",
+        "Review Date": "ថ្ងៃវាយតម្លៃ",
+        "Rating": "ការវាយតម្លៃ",
+        "Key Strengths": "ចំណុចខ្លាំងចម្បងៗ",
+        "Improvement Areas": "ចំណុចត្រូវកែលម្អ",
+        "Agreed Goals": "គោលដៅដែលបានឯកភាព",
+        "Milestone Date": "ថ្ងៃកំណត់ដំណាក់កាល",
+        "Milestone Type": "ប្រភេទដំណាក់កាល",
+        "Previous Title / Department": "មុខតំណែង / នាយកដ្ឋានពីមុន",
+        "New Title / Department": "មុខតំណែង / នាយកដ្ឋានថ្មី",
+        "Justification / Notes": "មូលហេតុ / កំណត់សម្គាល់",
+        "Asset Tag / Serial No": "លេខសម្គាល់ / សៀរៀល",
+        "Asset Name / Model": "ឈ្មោះសម្ភារៈ / ម៉ូដែល",
+        "Asset Category": "ប្រភេទសម្ភារៈ",
+        "Issued Date": "ថ្ងៃប្រគល់",
+        "Returned Date": "ថ្ងៃប្រគល់ត្រឡប់",
+        "Condition": "ស្ថានភាពសម្ភារៈ",
+        "Note Title": "ចំណងជើងកំណត់សម្គាល់",
+        "Category": "ប្រភេទ",
+        "Privacy Level": "កម្រិតភាពសម្ងាត់",
+        "Details / Content": "ខ្លឹមសារលម្អិត",
+        "Incident Date": "ថ្ងៃកើតហេតុ",
+        "Violation Type": "ប្រភេទការបំពានវិន័យ",
+        "Action Taken": "ចំណាត់ការអនុវត្ត",
+        "Action Date": "ថ្ងៃអនុវត្ត",
+        "Follow-up Required?": "ត្រូវការតាមដានបន្ត?",
+        "Bank Name": "ឈ្មោះធនាគារ",
+        "Branch": "សាខា",
+        "Account Holder Name": "ឈ្មោះម្ចាស់គណនី",
+        "Account Number": "លេខគណនី",
+        "SWIFT / Routing Code": "លេខកូដ SWIFT / Routing",
+        "Payment Method": "វិធីសាស្ត្រទូទាត់",
+
+        // Attendance & Leave Form Labels
+        "Employee": "បុគ្គលិក",
+        "Attendance Date": "កាលបរិច្ឆេទវត្តមាន",
+        "Clock In Time": "ម៉ោងចូល",
+        "Clock Out Time": "ម៉ោងចេញ",
+        "Leave Category": "ប្រភេទច្បាប់ឈប់សម្រាក",
+        "Number of Days": "ចំនួនថ្ងៃ",
+        "Reason / Handover Notes": "មូលហេតុ / កំណត់សម្គាល់ប្រគល់ការងារ",
+
+        // Recruitment & Payroll Form Labels
+        "Job Title": "ដំណែងការងារ",
+        "Headcount Vacancies": "ចំនួនជ្រើសរើស",
+        "Salary Range": "កម្រិតប្រាក់ខែ",
+        "Candidate Name": "ឈ្មោះបេក្ខជន",
+        "Applied Position": "មុខតំណែងដែលបានដាក់ពាក្យ",
+        "Pipeline Stage": "ដំណាក់កាលជ្រើសរើស",
+        "Current Company": "ក្រុមហ៊ុនបច្ចុប្បន្ន",
+        "Resume Link": "តំណភ្ជាប់ប្រវត្តិរូប (Resume URL)",
+        "Payroll Period": "កាលបរិច្ឆេទបើកប្រាក់ (ខែ/ឆ្នាំ)",
+        "Base Salary ($)": "ប្រាក់ខែគោល ($)",
+        "Allowances ($)": "ប្រាក់ឧបត្ថម្ភ ($)",
+        "Overtime Pay ($)": "ប្រាក់ថែមម៉ោង ($)",
+        "Gross Salary ($)": "ប្រាក់បៀវត្សរ៍សរុប ($)",
+        "Tax / Deductions ($)": "ពន្ធ និងការកាត់កង ($)",
+        "Net Salary ($)": "ប្រាក់បៀវត្សរ៍សុទ្ធ ($)",
+        "Payment Status": "ស្ថានភាពការទូទាត់",
+
+        // Users & Settings Form Labels
+        "Username": "ឈ្មោះអ្នកប្រើ",
+        "Email Address": "អាសយដ្ឋានអ៊ីមែល",
+        "System Role": "តួនាទីក្នុងប្រព័ន្ធ",
+        "Password": "ពាក្យសម្ងាត់",
+        "List Category": "ប្រភេទបញ្ជីទិន្នន័យ",
+        "Item Value / Name": "តម្លៃ / ឈ្មោះធាតុ",
+        "Display Order": "លំដាប់លំដោយ",
+        "Description": "ការពិពណ៌នា",
+        "Organization Name": "ឈ្មោះស្ថាប័ន / ក្រុមហ៊ុន",
+        "Logo URL": "តំណភ្ជាប់រូបសញ្ញា (Logo URL)",
+        "Headquarters Address": "អាសយដ្ឋានការិយាល័យកណ្តាល",
+        "Default Country": "ប្រទេសលំនាំដើម",
+        "Time Zone": "តំបន់ពេលវេលា (Time Zone)",
+        "Date Format": "ទម្រង់កាលបរិច្ឆេទ",
+        "Currency": "រូបិយប័ណ្ណ",
+        "Employee ID Format": "ទម្រង់លេខសម្គាល់បុគ្គលិក",
+
+        // Buttons & Actions
+        "Save Employee": "រក្សាទុកបុគ្គលិក",
+        "Save Record": "រក្សាទុកកំណត់ត្រា",
+        "Save Changes": "រក្សាទុកការផ្លាស់ប្តូរ",
+        "Cancel": "បោះបង់",
+        "Close": "បិទ",
+        "Delete": "លុប",
+        "Edit": "កែសម្រួល",
+        "View": "មើល",
+        "Add": "បន្ថែម",
+        "Export CSV": "ទាញយក CSV",
+        "Print": "បោះពុម្ព",
+        "Apply": "អនុវត្ត",
+        "Approve": "អនុម័ត",
+        "Reject": "បដិសេធ",
+        "Filter": "ត្រង",
+        "Reset": "កំណត់ឡើងវិញ",
+        "Back": "ត្រឡប់ក្រោយ",
+        "Submit": "ដាក់ស្នើ",
+        "Confirm": "បញ្ជាក់",
+
+        // Table Headers
+        "ID": "លេខកូដ",
+        "Employee": "បុគ្គលិក",
+        "Department": "នាយកដ្ឋាន",
+        "Position": "មុខតំណែង",
+        "Status": "ស្ថានភាព",
+        "Contact": "ទំនាក់ទំនង",
+        "Actions": "សកម្មភាព",
+        "Date": "កាលបរិច្ឆេទ",
+        "Clock In": "ម៉ោងចូល",
+        "Clock Out": "ម៉ោងចេញ",
+        "Work Hours": "ម៉ោងធ្វើការ",
+        "Location": "ទីតាំង",
+        "Days": "ចំនួនថ្ងៃ",
+        "Period": "រយៈពេល",
+        "Gross Pay": "ប្រាក់បៀវត្សរ៍សរុប",
+        "Net Pay": "ប្រាក់បៀវត្សរ៍សុទ្ធ",
+        "Stage": "ដំណាក់កាល",
+        "Experience": "បទពិសោធន៍",
+        "Rating": "ការវាយតម្លៃ",
+
+        // Dropdown Option Values
+        "All Departments": "គ្រប់នាយកដ្ឋាន",
+        "All Positions": "គ្រប់មុខតំណែង",
+        "All Statuses": "គ្រប់ស្ថានភាព",
+        "All Employment Types": "គ្រប់ប្រភេទការងារ",
+        "All Categories": "គ្រប់ប្រភេទ",
+        "All Stages": "គ្រប់ដំណាក់កាល",
+        "Active": "សកម្ម",
+        "Probation": "សាកល្បងការងារ",
+        "On Leave": "កំពុងឈប់សម្រាក",
+        "Resigned": "លាលែង",
+        "Terminated": "បញ្ឈប់",
+        "Male": "ប្រុស",
+        "Female": "ស្រី",
+        "Other": "ផ្សេងៗ",
+        "Single": "នៅលីវ",
+        "Married": "រៀបការរួច",
+        "Divorced": "លែងលះ",
+        "Widowed": "ពោះម៉ាយ / មេម៉ាយ",
+        "Permanent": "អចិន្ត្រៃយ៍",
+        "Contract": "កិច្ចសន្យា",
+        "Internship": "កម្មសិក្សា",
+        "Part-time": "ក្រៅម៉ោង",
+        "Full-time": "ពេញម៉ោង",
+        "Temporary": "បណ្តោះអាសន្ន",
+        "Consultant": "ទីប្រឹក្សា",
+        "Present": "មានវត្តមាន",
+        "Late": "មកយឺត",
+        "Work From Home": "ធ្វើការពីផ្ទះ",
+        "Half Day": "កន្លះថ្ងៃ",
+        "Absent": "អវត្តមាន",
+        "Approved": "បានអនុម័ត",
+        "Pending": "កំពុងរង់ចាំ",
+        "Rejected": "បានបដិសេធ",
+        "Paid": "បានទូទាត់",
+        "Processing": "កំពុងដំណើរការ",
+        "Annual Leave": "ច្បាប់ប្រចាំឆ្នាំ",
+        "Sick Leave": "ច្បាប់ឈឺ",
+        "Casual Leave": "ច្បាប់ផ្ទាល់ខ្លួន",
+        "Maternity Leave": "ច្បាប់លំហែមាតុភាព",
+        "Unpaid Leave": "ច្បាប់គ្មានប្រាក់ឈ្នួល",
+        "Yes": "បាទ / ចាស",
+        "No": "ទេ",
+        "Yes (Primary)": "បាទ/ចាស (ចម្បង)",
+        "Yes (Secondary)": "បាទ/ចាស (បន្ទាប់)",
+        "Beginner": "ដំបូង",
+        "Intermediate": "មធ្យម",
+        "Advanced": "កម្រិតខ្ពស់",
+        "Expert": "អ្នកជំនាញ",
+
+        // Reports
+        "Employee Master List": "បញ្ជីបុគ្គលិកគោល",
+        "Headcount by Department": "ចំនួនបុគ្គលិកតាមនាយកដ្ឋាន",
+        "Employment Status Report": "របាយការណ៍ស្ថានភាពការងារ",
+        "Employment Type Analysis": "ការវិភាគប្រភេទការងារ",
+        "New Joiners & Onboarding": "បុគ្គលិកចូលថ្មី និងការចាប់ផ្តើមការងារ",
+        "Attendance & Punctuality": "វត្តមាន និងភាពទៀងទាត់ពេលវេលា",
+        "Leave Balances & Absences": "សមតុល្យច្បាប់ និងការអវត្តមាន",
+        "Recruitment & Candidates": "ការជ្រើសរើស និងបេក្ខជន",
+        "Payroll Register & Compensation": "បញ្ជីបើកប្រាក់បៀវត្សរ៍ និងសំណង",
+        "Expiring Documents & Compliance": "ឯកសារជិតផុតកំណត់ និងអនុលោមភាព",
+        "Expiring Contracts": "កិច្ចសន្យាការងារជិតផុតកំណត់",
+        "Organizational Skills Inventory": "បញ្ជីសារពើភ័ណ្ឌជំនាញអង្គភាព",
+        "Training & Certification Log": "កំណត់ត្រាបណ្តុះបណ្តាល និងវិញ្ញាបនបត្រ",
+        "Print Report": "បោះពុម្ពរបាយការណ៍",
+        "Export to CSV": "ទាញយកជា CSV",
+        "Staff ID": "លេខកូដបុគ្គលិក",
+        "Employee Name": "ឈ្មោះបុគ្គលិក",
+        "Staff Name": "ឈ្មោះបុគ្គលិក",
+        "Document / Record": "ឯកសារ / កំណត់ត្រា",
+        "Days Remaining": "ចំនួនថ្ងៃនៅសល់",
+        "Compliance Status": "ស្ថានភាពអនុលោមភាព",
+        "Manager": "ប្រធានគ្រប់គ្រង",
+        "Type": "ប្រភេទ",
+        "Email": "អ៊ីមែល",
+        "Phone": "ទូរស័ព្ទ",
+        "Valid": "មានសុពលភាព",
+        "Expiring Soon": "ជិតផុតកំណត់",
+        "Expired": "ផុតកំណត់",
+
+        // Users & Roles
+        "Create User Account": "បង្កើតគណនីអ្នកប្រើប្រាស់",
+        "Edit User Account": "កែសម្រួលគណនីអ្នកប្រើប្រាស់",
+        "Full Legal / Display Name": "ឈ្មោះពេញផ្លូវការ / ឈ្មោះបង្ហាញ",
+        "Initial Password": "ពាក្យសម្ងាត់ដំបូង",
+        "Reset User Password": "កំណត់ពាក្យសម្ងាត់ឡើងវិញ",
+        "New Password": "ពាក្យសម្ងាត់ថ្មី",
+        "Save User": "រក្សាទុកអ្នកប្រើប្រាស់",
+        "Deactivate": "ផ្អាកដំណើរការ",
+        "Activate": "បើកដំណើរការ",
+        "Inactive": "អសកម្ម",
+
+        // Master Lists
+        "Edit Option": "កែសម្រួលជម្រើស",
+        "Add New Option": "បន្ថែមជម្រើសថ្មី",
+        "Option Value / Display Label": "តម្លៃជម្រើស / ឈ្មោះបង្ហាញ",
+        "Option Code / Identifier": "លេខកូដជម្រើស / កូដសម្គាល់",
+        "Set as Default Option": "កំណត់ជាជម្រើសលំនាំដើម",
+        "Save Option": "រក្សាទុកជម្រើស",
+        "Default": "លំនាំដើម",
+        "Delete Option": "លុបជម្រើស",
+
+        // Auth & Modals
+        "Sign in to ApexHR Suite": "ចូលប្រើប្រាស់ប្រព័ន្ធ ApexHR Suite",
+        "Username or Email": "ឈ្មោះអ្នកប្រើ ឬអ៊ីមែល",
+        "Sign In": "ចូលប្រើ",
+        "Demo Login Quick Select": "ជ្រើសរើសគណនីសាកល្បងរហ័ស",
+        "Auto-Mark": "ចុះវត្តមានស្វ័យប្រវត្តិ",
+        "Search Employee": "ស្វែងរកបុគ្គលិក"
+    };
+
+    // Inverse mapping for Khmer to English
+    const PHRASE_KM_TO_EN = {};
+    Object.keys(PHRASE_EN_TO_KM).forEach(enKey => {
+        const kmVal = PHRASE_EN_TO_KM[enKey];
+        if (kmVal) {
+            PHRASE_KM_TO_EN[kmVal] = enKey;
+        }
+    });
+
+    // Specific placeholder mappings
+    const PLACEHOLDER_EN_TO_KM = {
+        "Search by name, ID, email, role, phone...": "ស្វែងរកតាមឈ្មោះ លេខកូដ អ៊ីមែល តួនាទី ទូរស័ព្ទ...",
+        "Search by name, ID code, title, or email...": "ស្វែងរកតាមឈ្មោះ លេខកូដ តួនាទី ឬអ៊ីមែល...",
+        "Search candidates by name, email, skills...": "ស្វែងរកបេក្ខជនតាមឈ្មោះ អ៊ីមែល ជំនាញ...",
+        "Search list items...": "ស្វែងរកធាតុក្នុងបញ្ជី...",
+        "Search users...": "ស្វែងរកអ្នកប្រើប្រាស់...",
+        "e.g. CORP-0105": "ឧ. CORP-0105",
+        "e.g. CC-HR-001": "ឧ. CC-HR-001",
+        "e.g. Headquarters / Remote": "ឧ. ការិយាល័យកណ្តាល / ធ្វើការពីចម្ងាយ",
+        "e.g. John": "ឧ. សុខ",
+        "e.g. Doe": "ឧ. ចាន់",
+        "john.doe@company.com": "sok.chan@company.com",
+        "Name or Emp ID": "ឈ្មោះ ឬលេខកូដបុគ្គលិក",
+        "e.g. Senior Software Engineer": "ឧ. វិស្វករកម្មវិធីជាន់ខ្ពស់",
+        "e.g. Phnom Penh, Cambodia": "ឧ. រាជធានីភ្នំពេញ កម្ពុជា",
+        "e.g. $1,200 - $1,800": "ឧ. $១,២០០ - $១,៨០០",
+        "e.g. Q3 2026 Appraisal": "ឧ. ការវាយតម្លៃត្រីមាសទី៣ ២០២៦",
+        "Search by name or code...": "ស្វែងរកតាមឈ្មោះ ឬលេខកូដ...",
+        "Search by name, bank, or ID...": "ស្វែងរកតាមឈ្មោះ ធនាគារ ឬលេខកូដ...",
+        "Minimum 6 characters": "យ៉ាងតិច ៦ តួអក្សរ",
+        "Filter by date...": "ត្រងតាមកាលបរិច្ឆេទ...",
+        "Filter by status...": "ត្រងតាមស្ថានភាព..."
+    };
+
+    const PLACEHOLDER_KM_TO_EN = {};
+    Object.keys(PLACEHOLDER_EN_TO_KM).forEach(enKey => {
+        const kmVal = PLACEHOLDER_EN_TO_KM[enKey];
+        if (kmVal) {
+            PLACEHOLDER_KM_TO_EN[kmVal] = enKey;
+        }
+    });
+
+    /**
      * Retrieve translated text by key
      */
     function t(key, fallback = "") {
@@ -550,7 +921,7 @@ const I18n = (function () {
         // Update Topbar Dropdown UI
         updateLanguageSwitcherUI();
 
-        // Translate all data-i18n elements in DOM
+        // Translate all elements across DOM
         translateDOM(document);
 
         // Notify registered listeners (e.g. App to refresh current active view)
@@ -593,24 +964,121 @@ const I18n = (function () {
     }
 
     /**
-     * Translate DOM nodes containing data-i18n attributes
+     * Translate text nodes inside an element preserving child elements like icons
+     */
+    function translateElementText(el, isKm) {
+        if (!el || !el.childNodes) return;
+
+        el.childNodes.forEach(child => {
+            if (child.nodeType === Node.TEXT_NODE) {
+                const text = child.nodeValue;
+                const trimmed = text.trim();
+                if (!trimmed) return;
+
+                const hasColon = trimmed.endsWith(":");
+                const clean = hasColon ? trimmed.slice(0, -1).trim() : trimmed;
+
+                if (isKm) {
+                    if (PHRASE_EN_TO_KM[clean]) {
+                        if (!child._origEnText) {
+                            child._origEnText = trimmed;
+                        }
+                        const translated = PHRASE_EN_TO_KM[clean] + (hasColon ? ":" : "");
+                        child.nodeValue = text.replace(trimmed, translated);
+                    }
+                } else {
+                    if (child._origEnText) {
+                        child.nodeValue = text.replace(trimmed, child._origEnText);
+                    } else if (PHRASE_KM_TO_EN[clean]) {
+                        const original = PHRASE_KM_TO_EN[clean] + (hasColon ? ":" : "");
+                        child.nodeValue = text.replace(trimmed, original);
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Translate placeholder of input or textarea
+     */
+    function translatePlaceholder(el, isKm) {
+        const ph = el.getAttribute("placeholder");
+        if (!ph) return;
+        const trimmed = ph.trim();
+        if (!trimmed) return;
+
+        if (isKm) {
+            if (PLACEHOLDER_EN_TO_KM[trimmed]) {
+                if (!el.hasAttribute("data-orig-placeholder")) {
+                    el.setAttribute("data-orig-placeholder", ph);
+                }
+                el.setAttribute("placeholder", PLACEHOLDER_EN_TO_KM[trimmed]);
+            } else if (PHRASE_EN_TO_KM[trimmed]) {
+                if (!el.hasAttribute("data-orig-placeholder")) {
+                    el.setAttribute("data-orig-placeholder", ph);
+                }
+                el.setAttribute("placeholder", PHRASE_EN_TO_KM[trimmed]);
+            }
+        } else {
+            if (el.hasAttribute("data-orig-placeholder")) {
+                el.setAttribute("placeholder", el.getAttribute("data-orig-placeholder"));
+            } else if (PLACEHOLDER_KM_TO_EN[trimmed]) {
+                el.setAttribute("placeholder", PLACEHOLDER_KM_TO_EN[trimmed]);
+            } else if (PHRASE_KM_TO_EN[trimmed]) {
+                el.setAttribute("placeholder", PHRASE_KM_TO_EN[trimmed]);
+            }
+        }
+    }
+
+    /**
+     * Translate select dropdown option elements
+     */
+    function translateOption(opt, isKm) {
+        const text = opt.textContent;
+        const trimmed = text.trim();
+        if (!trimmed) return;
+
+        if (isKm) {
+            if (PHRASE_EN_TO_KM[trimmed]) {
+                if (!opt.hasAttribute("data-orig-text")) {
+                    opt.setAttribute("data-orig-text", trimmed);
+                }
+                opt.textContent = PHRASE_EN_TO_KM[trimmed];
+            }
+        } else {
+            if (opt.hasAttribute("data-orig-text")) {
+                opt.textContent = opt.getAttribute("data-orig-text");
+            } else if (PHRASE_KM_TO_EN[trimmed]) {
+                opt.textContent = PHRASE_KM_TO_EN[trimmed];
+            }
+        }
+    }
+
+    /**
+     * Comprehensive DOM translation for both explicit data-i18n attributes
+     * and dynamic form fields, labels, placeholders, selects, and modals.
      */
     function translateDOM(root = document) {
         if (!root) return;
+        const isKm = (currentLang === "km");
 
-        // Translate textContent / innerHTML
+        // 1. Translate elements with explicit [data-i18n]
         const translatables = root.querySelectorAll("[data-i18n]");
         translatables.forEach(el => {
             const key = el.getAttribute("data-i18n");
             if (key) {
                 const text = t(key);
                 if (text) {
-                    el.textContent = text;
+                    if (el.hasAttribute("data-i18n-html")) {
+                        el.innerHTML = text;
+                    } else {
+                        el.textContent = text;
+                    }
                 }
             }
         });
 
-        // Translate placeholders
+        // 2. Translate explicit [data-i18n-placeholder]
         const placeholders = root.querySelectorAll("[data-i18n-placeholder]");
         placeholders.forEach(el => {
             const key = el.getAttribute("data-i18n-placeholder");
@@ -622,7 +1090,7 @@ const I18n = (function () {
             }
         });
 
-        // Translate titles / aria-labels
+        // 3. Translate explicit [data-i18n-title]
         const titles = root.querySelectorAll("[data-i18n-title]");
         titles.forEach(el => {
             const key = el.getAttribute("data-i18n-title");
@@ -632,6 +1100,62 @@ const I18n = (function () {
                     el.title = text;
                     el.setAttribute("aria-label", text);
                 }
+            }
+        });
+
+        // 4. Translate form labels and field titles across all forms and modals
+        const labels = root.querySelectorAll("label, .form-label, .form-check-label, .input-group-text");
+        labels.forEach(lbl => {
+            if (!lbl.hasAttribute("data-i18n")) {
+                translateElementText(lbl, isKm);
+            }
+        });
+
+        // 5. Translate all input and textarea placeholders
+        const inputFields = root.querySelectorAll("input[placeholder], textarea[placeholder]");
+        inputFields.forEach(input => {
+            if (!input.hasAttribute("data-i18n-placeholder")) {
+                translatePlaceholder(input, isKm);
+            }
+        });
+
+        // 6. Translate all select option items
+        const selectOptions = root.querySelectorAll("select option");
+        selectOptions.forEach(opt => {
+            if (!opt.hasAttribute("data-i18n")) {
+                translateOption(opt, isKm);
+            }
+        });
+
+        // 7. Translate table headers
+        const tableHeaders = root.querySelectorAll("th");
+        tableHeaders.forEach(th => {
+            if (!th.hasAttribute("data-i18n")) {
+                translateElementText(th, isKm);
+            }
+        });
+
+        // 8. Translate buttons and modal action buttons
+        const actionButtons = root.querySelectorAll("button, .btn");
+        actionButtons.forEach(btn => {
+            if (!btn.hasAttribute("data-i18n") && !btn.classList.contains("lang-switch-item")) {
+                translateElementText(btn, isKm);
+            }
+        });
+
+        // 9. Translate modal titles and card section headers
+        const headings = root.querySelectorAll(".modal-title, .card-title, .sidebar-heading, h5, h6");
+        headings.forEach(h => {
+            if (!h.hasAttribute("data-i18n")) {
+                translateElementText(h, isKm);
+            }
+        });
+
+        // 10. Translate navigation tabs (e.g. Employee Profile 15 tabs)
+        const navLinks = root.querySelectorAll(".nav-tabs .nav-link, .nav-pills .nav-link");
+        navLinks.forEach(link => {
+            if (!link.hasAttribute("data-i18n")) {
+                translateElementText(link, isKm);
             }
         });
     }
@@ -646,7 +1170,7 @@ const I18n = (function () {
     }
 
     /**
-     * Initialize language from localStorage or settings
+     * Initialize language from localStorage or settings, setup event hooks
      */
     function init() {
         let savedLang = "en";
@@ -668,6 +1192,20 @@ const I18n = (function () {
                 }
             });
         });
+
+        // Global Modal Event Listeners:
+        // Automatically translate any modal right as it is about to be shown or after shown
+        document.addEventListener("show.bs.modal", function (event) {
+            if (event.target) {
+                translateDOM(event.target);
+            }
+        });
+
+        document.addEventListener("shown.bs.modal", function (event) {
+            if (event.target) {
+                translateDOM(event.target);
+            }
+        });
     }
 
     return {
@@ -677,7 +1215,9 @@ const I18n = (function () {
         setLanguage,
         translateDOM,
         onLanguageChange,
-        TRANSLATIONS
+        TRANSLATIONS,
+        PHRASE_EN_TO_KM,
+        PLACEHOLDER_EN_TO_KM
     };
 })();
 
