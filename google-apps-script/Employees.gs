@@ -116,3 +116,23 @@ function handleDeleteEmployee(data) {
         return createResponse(true, null, "Employee marked as Resigned/Archived.");
     }
 }
+
+function handleUpdateEmployeePhoto(data) {
+    const empId = data.EmployeeID || data.id;
+    if (!empId) {
+        return createResponse(false, null, "Employee ID is required.");
+    }
+    const sheet = getSheet(CONFIG.SHEETS.EMPLOYEES);
+    const today = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd");
+    const photo = data.EmployeePhoto !== undefined ? data.EmployeePhoto : (data.photo !== undefined ? data.photo : "");
+    const updated = updateObjectInSheet(sheet, "EmployeeID", empId, {
+        EmployeePhoto: photo,
+        UpdatedDate: today,
+        UpdatedBy: "Admin"
+    });
+    if (!updated) {
+        return createResponse(false, null, "Employee [" + empId + "] was not found.");
+    }
+    logAuditEntry("ADMIN", "Admin", "UPDATE_PHOTO", "Employees", empId, "Updated profile photo for " + empId);
+    return createResponse(true, { EmployeeID: empId, EmployeePhoto: photo }, "Profile photo updated successfully");
+}

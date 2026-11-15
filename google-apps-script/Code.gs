@@ -83,6 +83,9 @@ function doPost(e) {
             case "saveEmployee":
                 return handleSaveEmployee(data);
 
+            case "updateEmployeePhoto":
+                return handleUpdateEmployeePhoto(data);
+
             case "deleteEmployee":
                 return handleDeleteEmployee(data);
 
