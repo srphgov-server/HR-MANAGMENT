@@ -70,6 +70,18 @@ const I18n = (function () {
             btn_save_changes: "Save Changes",
             btn_save_record: "Save Record",
 
+            // Profile & Avatar
+            change_photo_title: "Change Profile Photo",
+            prof_change_photo: "Change Photo",
+            upload_file: "Upload File",
+            image_url: "Image URL",
+            presets: "Presets",
+            drag_or_click: "Click to upload or drag & drop",
+            max_file_size: "PNG, JPG, WEBP up to 3MB",
+            remove_photo: "Remove Photo",
+            save_photo: "Save Photo",
+            choose_preset: "Choose a preset professional avatar:",
+
             // Common Table Columns
             th_id: "ID",
             th_employee: "Employee",
@@ -316,6 +328,18 @@ const I18n = (function () {
             btn_back: "ត្រឡប់ក្រោយ",
             btn_save_changes: "រក្សាទុកការផ្លាស់ប្តូរ",
             btn_save_record: "រក្សាទុកកំណត់ត្រា",
+
+            // Profile & Avatar
+            change_photo_title: "ផ្លាស់ប្តូររូបថតកម្រងព័ត៌មាន",
+            prof_change_photo: "ផ្លាស់ប្តូររូបថត",
+            upload_file: "ផ្ទុកឡើងឯកសារ",
+            image_url: "តំណភ្ជាប់រូបភាព",
+            presets: "រូបភាពគំរូ",
+            drag_or_click: "ចុចដើម្បីផ្ទុកឡើង ឬអូសទម្លាក់",
+            max_file_size: "PNG, JPG, WEBP ទំហំអតិបរមា 3MB",
+            remove_photo: "លុបរូបថតចេញ",
+            save_photo: "រក្សាទុករូបថត",
+            choose_preset: "ជ្រើសរើសរូបភាពគំរូវិជ្ជាជីវៈ៖",
 
             // Common Table Columns
             th_id: "លេខកូដ",
@@ -827,7 +851,24 @@ const I18n = (function () {
         "Sign In": "ចូលប្រើ",
         "Demo Login Quick Select": "ជ្រើសរើសគណនីសាកល្បងរហ័ស",
         "Auto-Mark": "ចុះវត្តមានស្វ័យប្រវត្តិ",
-        "Search Employee": "ស្វែងរកបុគ្គលិក"
+        "Search Employee": "ស្វែងរកបុគ្គលិក",
+
+        // Profile Photo & Avatar
+        "Change Photo": "ផ្លាស់ប្តូររូបថត",
+        "Change Profile Photo": "ផ្លាស់ប្តូររូបថតកម្រងព័ត៌មាន",
+        "Upload File": "ផ្ទុកឡើងឯកសារ",
+        "Upload Image File": "ផ្ទុកឡើងឯកសាររូបភាព",
+        "Image URL": "តំណភ្ជាប់រូបភាព",
+        "Presets": "រូបភាពគំរូ",
+        "Preset Avatars": "រូបភាពគំរូ",
+        "Click to upload or drag & drop": "ចុចដើម្បីផ្ទុកឡើង ឬអូសទម្លាក់",
+        "PNG, JPG, WEBP up to 3MB": "PNG, JPG, WEBP ទំហំអតិបរមា 3MB",
+        "Remove Photo": "លុបរូបថតចេញ",
+        "Save Photo": "រក្សាទុករូបថត",
+        "Choose a preset professional avatar:": "ជ្រើសរើសរូបភាពគំរូវិជ្ជាជីវៈ៖",
+        "Direct Image URL": "តំណភ្ជាប់រូបភាពផ្ទាល់",
+        "Preview": "មើលជាមុន",
+        "Edit Profile": "កែសម្រួលកម្រងព័ត៌មាន"
     };
 
     // Inverse mapping for Khmer to English
