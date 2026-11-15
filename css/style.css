@@ -701,6 +701,78 @@ button, a, input, select, textarea {
         width: 75px !important;
         height: 75px !important;
     }
+
+    .profile-avatar-overlay {
+        width: 75px !important;
+        height: 75px !important;
+    }
+}
+
+/* Employee Profile Avatar Hover & Edit Badge */
+.profile-avatar-wrapper {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 50%;
+    overflow: visible;
+}
+
+.profile-avatar-wrapper:hover #prof-photo {
+    filter: brightness(0.9);
+}
+
+.profile-avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.45);
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    pointer-events: none;
+}
+
+.profile-avatar-wrapper:hover .profile-avatar-overlay {
+    opacity: 1;
+}
+
+.photo-drop-zone {
+    border: 2px dashed #cbd5e1;
+    border-radius: 0.5rem;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    background-color: #f8fafc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.photo-drop-zone:hover,
+.photo-drop-zone.dragover {
+    border-color: var(--bs-primary);
+    background-color: #eff6ff;
+}
+
+.preset-avatar-opt {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.preset-avatar-opt:hover {
+    transform: scale(1.12);
+    border-color: var(--bs-primary);
+}
+
+.preset-avatar-opt.active {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.35);
+    transform: scale(1.08);
 }
 
 /* Print Stylesheet */
