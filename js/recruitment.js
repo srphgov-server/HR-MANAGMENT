@@ -127,6 +127,10 @@ const Recruitment = (function () {
         } else if (activeTab === "jobs") {
             renderJobsView(content);
         }
+
+        if (window.I18n) {
+            I18n.translateDOM(content);
+        }
     }
 
     function renderKPIs() {
