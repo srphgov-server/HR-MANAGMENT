@@ -282,6 +282,10 @@ const EmployeeProfile = (function () {
         renderLeaveTab();
         renderAssetsTab();
         renderNotesTab();
+
+        if (window.I18n) {
+            I18n.translateDOM(document.getElementById("profileTabContent"));
+        }
     }
 
     // -------------------------------------------------------------
