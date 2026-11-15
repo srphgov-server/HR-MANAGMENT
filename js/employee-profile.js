@@ -40,12 +40,18 @@ const EmployeeProfile = (function () {
                 <div class="card-body p-3 p-md-4">
                     <div class="row align-items-center g-3">
                         <div class="col-auto">
-                            <div class="position-relative">
+                            <div class="position-relative profile-avatar-wrapper cursor-pointer" id="profile-avatar-wrapper" title="Click to change photo" onclick="EmployeeProfile.openChangePhotoModal()">
                                 <img id="prof-photo" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80"
                                      class="rounded-circle border border-3 border-white shadow-sm"
                                      width="100" height="100" style="object-fit: cover;" alt="Employee Photo"
                                      onerror="this.src='https://via.placeholder.com/100?text=HR'">
+                                <div class="profile-avatar-overlay rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-camera-fill text-white fs-4"></i>
+                                </div>
                                 <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-white rounded-circle" id="prof-status-dot"></span>
+                                <button type="button" class="btn btn-sm btn-primary rounded-circle position-absolute bottom-0 start-0 p-0 shadow-sm border border-2 border-white d-flex align-items-center justify-content-center" id="btn-change-avatar-badge" title="Change Photo" style="width: 28px; height: 28px;">
+                                    <i class="bi bi-camera-fill" style="font-size: 0.75rem;"></i>
+                                </button>
                             </div>
                         </div>
                         <div class="col-12 col-sm">
@@ -302,7 +308,8 @@ const EmployeeProfile = (function () {
                 <div class="col-12">
                     <div class="p-3 bg-light rounded-3 d-flex gap-2 flex-wrap align-items-center">
                         <span class="small fw-bold text-muted text-uppercase me-2"><i class="bi bi-lightning-charge-fill text-warning me-1"></i>Quick Actions:</span>
-                        <button class="btn btn-white btn-sm border shadow-sm" onclick="Employees.openEmployeeModal('${emp.EmployeeID}')"><i class="bi bi-pencil me-1"></i>Edit Profile</button>
+                        <button class="btn btn-white btn-sm border shadow-sm" onclick="Employees.openEmployeeModal('${emp.EmployeeID}')"><i class="bi bi-pencil me-1"></i><span data-i18n="edit_profile">Edit Profile</span></button>
+                        <button class="btn btn-white btn-sm border shadow-sm" onclick="EmployeeProfile.openChangePhotoModal()"><i class="bi bi-camera text-primary me-1"></i><span data-i18n="prof_change_photo">Change Photo</span></button>
                         <button class="btn btn-white btn-sm border shadow-sm" onclick="EmployeeProfile.openSubRecordModal('documents')"><i class="bi bi-cloud-upload me-1"></i>Upload Document</button>
                         <button class="btn btn-white btn-sm border shadow-sm" onclick="EmployeeProfile.openSubRecordModal('skills')"><i class="bi bi-plus-circle me-1"></i>Add Skill</button>
                         <button class="btn btn-white btn-sm border shadow-sm" onclick="EmployeeProfile.openSubRecordModal('experience')"><i class="bi bi-briefcase me-1"></i>Add Experience</button>
@@ -1637,10 +1644,302 @@ const EmployeeProfile = (function () {
         });
     }
 
+    /**
+     * Preset Professional Avatars for Quick Selection
+     */
+    const PRESET_AVATARS = [
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=160&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=160&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&auto=format&fit=crop&q=80"
+    ];
+
+    /**
+     * Modal dialog to change employee profile photo
+     */
+    function openChangePhotoModal() {
+        if (!profileData || !profileData.employee) return;
+        const emp = profileData.employee;
+        const defaultPlaceholder = "https://via.placeholder.com/160?text=HR";
+        const currentPhoto = emp.EmployeePhoto || defaultPlaceholder;
+        let selectedPhoto = currentPhoto;
+
+        const modalId = "changeProfilePhotoModal";
+        const existing = document.getElementById(modalId);
+        if (existing) existing.remove();
+
+        const modalHtml = `
+            <div class="modal fade" id="${modalId}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow">
+                        <div class="modal-header border-bottom pb-3">
+                            <h5 class="modal-title fw-bold">
+                                <i class="bi bi-camera text-primary me-2"></i><span data-i18n="change_photo_title">Change Profile Photo</span>
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body p-4">
+                            <!-- Live Avatar Preview Area -->
+                            <div class="text-center mb-4">
+                                <div class="position-relative d-inline-block">
+                                    <img id="modal-photo-preview" src="${currentPhoto}"
+                                         class="rounded-circle border border-4 border-white shadow"
+                                         width="110" height="110" style="object-fit: cover;" alt="Preview"
+                                         onerror="this.src='${defaultPlaceholder}'">
+                                    <span class="position-absolute bottom-0 end-0 p-1 bg-primary text-white rounded-circle shadow-sm" style="width: 26px; height: 26px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-eye-fill" style="font-size: 0.75rem;"></i>
+                                    </span>
+                                </div>
+                                <h6 class="fw-bold text-dark mt-2 mb-0">${emp.FirstName || ""} ${emp.LastName || ""}</h6>
+                                <small class="text-muted font-monospace">${emp.EmployeeCode || emp.EmployeeID}</small>
+                            </div>
+
+                            <!-- Source Tabs: Upload vs URL vs Preset -->
+                            <ul class="nav nav-pills nav-fill mb-3 bg-light p-1 rounded" id="photo-source-tabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active py-1 small fw-semibold" id="tab-photo-file-btn" data-bs-toggle="pill" data-bs-target="#tab-photo-file" type="button">
+                                        <i class="bi bi-upload me-1"></i> <span data-i18n="upload_file">Upload File</span>
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link py-1 small fw-semibold" id="tab-photo-url-btn" data-bs-toggle="pill" data-bs-target="#tab-photo-url" type="button">
+                                        <i class="bi bi-link-45deg me-1"></i> <span data-i18n="image_url">Image URL</span>
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link py-1 small fw-semibold" id="tab-photo-preset-btn" data-bs-toggle="pill" data-bs-target="#tab-photo-preset" type="button">
+                                        <i class="bi bi-person-bounding-box me-1"></i> <span data-i18n="presets">Presets</span>
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content" id="photo-source-content">
+                                <!-- 1. File Upload Tab -->
+                                <div class="tab-pane fade show active" id="tab-photo-file" role="tabpanel">
+                                    <input type="file" id="modal-photo-file-input" accept="image/png, image/jpeg, image/jpg, image/webp" class="d-none">
+                                    <div class="photo-drop-zone" id="photo-drop-zone">
+                                        <i class="bi bi-cloud-arrow-up fs-1 text-primary d-block mb-1"></i>
+                                        <div class="fw-semibold text-dark small" data-i18n="drag_or_click">Click to upload or drag & drop</div>
+                                        <small class="text-muted d-block mt-1" data-i18n="max_file_size">PNG, JPG, WEBP up to 3MB</small>
+                                        <div id="photo-file-status" class="mt-2 small"></div>
+                                    </div>
+                                </div>
+
+                                <!-- 2. URL Tab -->
+                                <div class="tab-pane fade" id="tab-photo-url" role="tabpanel">
+                                    <div class="mb-2">
+                                        <label class="form-label small fw-semibold" data-i18n="image_url">Image URL</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text bg-white"><i class="bi bi-globe text-muted"></i></span>
+                                            <input type="url" class="form-control" id="modal-photo-url-input" placeholder="https://example.com/photo.jpg" value="${currentPhoto.startsWith('http') && !currentPhoto.includes('placeholder') ? currentPhoto : ''}">
+                                            <button class="btn btn-outline-secondary" type="button" id="btn-preview-url">Preview</button>
+                                        </div>
+                                        <small class="text-muted mt-1 d-block">Paste any direct image link from Unsplash, Google Drive, or company hosting.</small>
+                                    </div>
+                                </div>
+
+                                <!-- 3. Presets Tab -->
+                                <div class="tab-pane fade" id="tab-photo-preset" role="tabpanel">
+                                    <label class="form-label small fw-semibold mb-2" data-i18n="choose_preset">Choose a preset professional avatar:</label>
+                                    <div class="d-flex flex-wrap gap-2 justify-content-center" id="preset-avatars-grid">
+                                        ${PRESET_AVATARS.map((url, i) => `
+                                            <img src="${url}" class="preset-avatar-opt ${url === currentPhoto ? 'active' : ''}" data-url="${url}" alt="Preset ${i + 1}" title="Select avatar ${i + 1}">
+                                        `).join("")}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer Actions -->
+                        <div class="modal-footer border-top bg-light d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-danger btn-sm" id="btn-remove-photo">
+                                <i class="bi bi-trash me-1"></i> <span data-i18n="remove_photo">Remove Photo</span>
+                            </button>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                                    <span data-i18n="btn_cancel">Cancel</span>
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm" id="btn-save-photo">
+                                    <i class="bi bi-check2 me-1"></i> <span data-i18n="save_photo">Save Photo</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML("beforeend", modalHtml);
+        const modalEl = document.getElementById(modalId);
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+
+        const previewImg = document.getElementById("modal-photo-preview");
+        const fileInput = document.getElementById("modal-photo-file-input");
+        const dropZone = document.getElementById("photo-drop-zone");
+        const fileStatus = document.getElementById("photo-file-status");
+        const urlInput = document.getElementById("modal-photo-url-input");
+        const previewUrlBtn = document.getElementById("btn-preview-url");
+        const presetGrid = document.getElementById("preset-avatars-grid");
+        const removeBtn = document.getElementById("btn-remove-photo");
+        const saveBtn = document.getElementById("btn-save-photo");
+
+        const updatePreview = (src) => {
+            selectedPhoto = src;
+            previewImg.src = src;
+        };
+
+        // File upload handler
+        const handleFile = (file) => {
+            if (!file) return;
+            if (!file.type.startsWith("image/")) {
+                App.showToast("Please select a valid image file (PNG, JPG, or WEBP)", "warning");
+                return;
+            }
+            if (file.size > 3 * 1024 * 1024) {
+                App.showToast("Image file size must be less than 3MB", "warning");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                updatePreview(e.target.result);
+                if (fileStatus) {
+                    fileStatus.innerHTML = `<span class="badge bg-success-subtle text-success"><i class="bi bi-check2-circle me-1"></i>${file.name} (${Math.round(file.size / 1024)} KB)</span>`;
+                }
+                document.querySelectorAll(".preset-avatar-opt").forEach(p => p.classList.remove("active"));
+            };
+            reader.readAsDataURL(file);
+        };
+
+        if (dropZone && fileInput) {
+            dropZone.onclick = () => fileInput.click();
+            fileInput.onchange = (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    handleFile(e.target.files[0]);
+                }
+            };
+
+            dropZone.ondragover = (e) => {
+                e.preventDefault();
+                dropZone.classList.add("dragover");
+            };
+            dropZone.ondragleave = () => {
+                dropZone.classList.remove("dragover");
+            };
+            dropZone.ondrop = (e) => {
+                e.preventDefault();
+                dropZone.classList.remove("dragover");
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    handleFile(e.dataTransfer.files[0]);
+                }
+            };
+        }
+
+        // URL input preview
+        const applyUrlPreview = () => {
+            const url = urlInput.value.trim();
+            if (url) {
+                updatePreview(url);
+                document.querySelectorAll(".preset-avatar-opt").forEach(p => p.classList.remove("active"));
+                if (fileStatus) fileStatus.innerHTML = "";
+            }
+        };
+        if (urlInput) urlInput.addEventListener("input", applyUrlPreview);
+        if (previewUrlBtn) previewUrlBtn.onclick = applyUrlPreview;
+
+        // Preset avatar selection
+        if (presetGrid) {
+            presetGrid.querySelectorAll(".preset-avatar-opt").forEach(img => {
+                img.onclick = () => {
+                    const url = img.getAttribute("data-url");
+                    updatePreview(url);
+                    presetGrid.querySelectorAll(".preset-avatar-opt").forEach(p => p.classList.remove("active"));
+                    img.classList.add("active");
+                    if (fileStatus) fileStatus.innerHTML = "";
+                    if (urlInput) urlInput.value = url;
+                };
+            });
+        }
+
+        // Remove photo (revert to placeholder)
+        if (removeBtn) {
+            removeBtn.onclick = () => {
+                updatePreview(defaultPlaceholder);
+                document.querySelectorAll(".preset-avatar-opt").forEach(p => p.classList.remove("active"));
+                if (fileStatus) fileStatus.innerHTML = `<span class="badge bg-secondary-subtle text-secondary">Default placeholder selected</span>`;
+                if (urlInput) urlInput.value = "";
+            };
+        }
+
+        // Save Photo
+        if (saveBtn) {
+            saveBtn.onclick = async () => {
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span> Saving...`;
+
+                const photoToSave = selectedPhoto === defaultPlaceholder ? "" : selectedPhoto;
+                const updatePayload = {
+                    ...emp,
+                    EmployeePhoto: photoToSave
+                };
+
+                const res = await API.call("saveEmployee", updatePayload);
+                if (res.success) {
+                    // Update in-memory state
+                    emp.EmployeePhoto = photoToSave;
+                    if (profileData && profileData.employee) {
+                        profileData.employee.EmployeePhoto = photoToSave;
+                    }
+
+                    // Update profile header avatar
+                    const headerImg = document.getElementById("prof-photo");
+                    if (headerImg) {
+                        headerImg.src = photoToSave || defaultPlaceholder;
+                    }
+
+                    // If logged in user is viewing their own profile, sync topbar avatar
+                    const currentUser = Auth.getCurrentUser();
+                    if (currentUser && currentUser.EmployeeID === currentEmployeeId) {
+                        currentUser.Photo = photoToSave;
+                        currentUser.EmployeePhoto = photoToSave;
+                        const topAvatar = document.getElementById("current-user-avatar");
+                        if (topAvatar) topAvatar.src = photoToSave || defaultPlaceholder;
+                        try {
+                            const stored = JSON.parse(sessionStorage.getItem("apex_hr_user") || "{}");
+                            if (stored && stored.EmployeeID === currentEmployeeId) {
+                                stored.Photo = photoToSave;
+                                stored.EmployeePhoto = photoToSave;
+                                sessionStorage.setItem("apex_hr_user", JSON.stringify(stored));
+                            }
+                        } catch (e) {}
+                    }
+
+                    modal.hide();
+                    App.showToast("Profile photo updated successfully!", "success");
+                } else {
+                    App.showToast(res.message || "Failed to update profile photo", "danger");
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = `<i class="bi bi-check2 me-1"></i> Save Photo`;
+                }
+            };
+        }
+
+        // Auto translate if in Khmer mode
+        if (window.I18n) {
+            I18n.translateDOM(modalEl);
+        }
+    }
+
     return {
         render,
         openSubRecordModal,
-        deleteSubRecord
+        deleteSubRecord,
+        openChangePhotoModal
     };
 })();
 
