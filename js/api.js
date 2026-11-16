@@ -25,6 +25,14 @@ const API = (function () {
                 if (!demoStore.jobOpenings) demoStore.jobOpenings = JSON.parse(JSON.stringify(s.jobOpenings || []));
                 if (!demoStore.candidates) demoStore.candidates = JSON.parse(JSON.stringify(s.candidates || []));
                 if (!demoStore.payroll) demoStore.payroll = JSON.parse(JSON.stringify(s.payroll || []));
+                if (s.users && Array.isArray(s.users)) {
+                    if (!demoStore.users) demoStore.users = [];
+                    s.users.forEach(sampleU => {
+                        if (!demoStore.users.some(u => u.Username.toLowerCase() === sampleU.Username.toLowerCase() || u.UserID === sampleU.UserID)) {
+                            demoStore.users.push(JSON.parse(JSON.stringify(sampleU)));
+                        }
+                    });
+                }
                 saveDemoStore();
             } else {
                 demoStore = JSON.parse(JSON.stringify(window.SAMPLE_DATA || {}));
