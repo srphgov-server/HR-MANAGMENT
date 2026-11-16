@@ -126,6 +126,42 @@ const SAMPLE_DATA = {
             Status: "Active",
             LastLogin: "2026-09-06 11:20:00",
             CreatedDate: "2026-02-01"
+        },
+        {
+            UserID: "USR-000004",
+            Username: "hrofficer",
+            Email: "hr.officer@company.com",
+            PasswordHash: "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9", // admin123
+            FullName: "Jessica Wong (HR Officer)",
+            RoleID: "ROL-003",
+            EmployeeID: "EMP-000002",
+            Status: "Active",
+            LastLogin: "2026-09-05 14:15:00",
+            CreatedDate: "2026-02-15"
+        },
+        {
+            UserID: "USR-000005",
+            Username: "employee",
+            Email: "emily.watson@company.com",
+            PasswordHash: "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9", // admin123
+            FullName: "Emily Watson (UX Designer)",
+            RoleID: "ROL-005",
+            EmployeeID: "EMP-000004",
+            Status: "Active",
+            LastLogin: "2026-09-04 10:00:00",
+            CreatedDate: "2026-03-01"
+        },
+        {
+            UserID: "USR-000006",
+            Username: "viewer",
+            Email: "auditor@company.com",
+            PasswordHash: "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9", // admin123
+            FullName: "Arthur Pendelton (Auditor)",
+            RoleID: "ROL-006",
+            EmployeeID: "EMP-000005",
+            Status: "Active",
+            LastLogin: "2026-09-03 15:30:00",
+            CreatedDate: "2026-03-10"
         }
     ],
 
